@@ -47,3 +47,25 @@ Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni pa
  
  Pour supprimer un ficher dans un bucket, utiliser la commande **aws s3 rm s3://bucket/file**. La suppression de tous les fichiers d'un bucket se fait avec la commande **aws s3 rm s3://bucket --recursive**
  
+ # Creation d'un lambda
+ La creation d'une function necessite un role, qui définit les habilitations de cette fonction.
+ 
+ Le role peut etre crée avec la commande suivante : **aws iam create-role --role-name ??name?? --assume-role-policy-document file://??file??** où
+ * name: représente le nom du role
+ * file: le nom du fichier définissant les services ou entités pouvant utiliser ce role
+ 
+ La creation du role effectué, il faut preciser les permissions qu'accordent ce role.
+ La commande **aws iam create-policy --policy-name ??name?? --policy-document file://??file??** où
+ * name: le nom de la police
+ * file: le fichier definissant toutes les permissions
+ 
+ Les permissions definies, on peut les rattacher au role avec la commande **aws iam attach-role-policy --role-name ??roleName?? --policy-arn arn:aws:iam::??idcompte??:policy/??policyName??**
+ 
+ Pour avoir des informations sur un role ou une policy, utiliser les commandes 
+ * **aws iam get-role --role-name ??roleName??**
+ * **aws iam get-policy --policy-arn ??policyArn??**
+ 
+ Le role disponible, on peut creer notre lambda avec la commande **aws lambda create-function --function-name hello --runtime python3.8 --role arn:aws:iam::XXXXXX:role/??roleName?? --handler hello.handle --zip-file fileb://hello.zip**
+ 
+ La suppression de la fonction se fait avec la commande **aws lambda delete-function hello**
+ 
