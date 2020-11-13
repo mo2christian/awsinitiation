@@ -1,7 +1,9 @@
 # Introduction au cloud
 Liste des commandes à executer lors de la formation
 
-Avant de commencer l'execution des commandes, il est necessaire de configurer le CLI via la commance **aws configure**.
+Avant de commencer l'execution des commandes, il est necessaire de configurer le CLI via la commande 
+* **aws configure**.
+
 Specifier comme region par defaut eu-west-3, qui correspond à la region de Paris.
 Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni par le fomateur)
 
