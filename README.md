@@ -16,10 +16,10 @@ Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni pa
  Pour creer le serveur, utiliser la commande suivante 
  **aws ec2 run-instances --image-id ??ami-id?? --count 1 --instance-type t2.micro --key-name ??key??** 
  avec les parametres suivants : 
- * ami-id : l'ID de l'image. On pourra prendre l'image ami-014d8dccd70fd2632
+ * ami-id : l'ID de l'image. On pourra prendre l'image ami-089d839e690b09b28
  * key : le nom de clé SSH qui devra etre crée au préalable.
  
- La commande se presentera ainsi : **aws ec2 run-instances --image-id ami-014d8dccd70fd2632 --count 1 --instance-type t2.micro --key-name demo**
+ La commande se presentera ainsi : **aws ec2 run-instances --image-id ami-089d839e690b09b28 --count 1 --instance-type t2.micro --key-name demo**
  L'execution de la commande vous retournera un json dont le champs 'InstanceId' correspond à l'identifiant de votre machine. Pensez à le noter.
  
  Il est important de tagger ses ressources afin de faciliter leur recherche. Taggez votre machine avec la commande 
@@ -85,4 +85,18 @@ Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni pa
  Le role disponible, on peut creer notre lambda avec la commande **aws lambda create-function --function-name hello --runtime python3.8 --role arn:aws:iam::XXXXXX:role/??roleName?? --handler hello.handle --zip-file fileb://hello.zip**
  
  La suppression de la fonction se fait avec la commande **aws lambda delete-function hello**
+ 
+ # Installation de l'application TODO-LIST
+ L'application est écrite en java et par consequent, nécessite une machine virtuelle pour s'exécuter. L'installation ,
+ sur un système Ubuntu se fait avec la commande **sudo apt install openjdk-11-jre-headless**
+ 
+ Ensuite, copier le fichier Jar depuis S3 avec la commande **aws s3 cp s3://bucket/file /local/path/app.jar**
+ 
+ Puis lancer l'application avec la commande **java -jar app.jar**
+ 
+ #Rendre notre application plus résiliante
+ L'objectif est de permettre à notre application de toujours fonctionner quelque soit l'incident et ce avec un faible temps d'arret. 
+ 
+ Nous mettrons en place un script d'installation qui, au lancement de la machine installera notre application. Ainsi, en cas de panne ou redemarrage, nous aurons toujours
+ notre application disponible. Le script installera tous les elements necessaires pour l'execution de l'application.
  
