@@ -14,18 +14,24 @@
             <tr>
                 <td>Message</td>
                 <td>Statut</td>
+                <td>Actions</td>
             </tr>
             </thead>
             <tbody>
             <tr th:each="todo : ${todos}">
                 <td th:text="${todo.content}"></td>
                 <td th:text="${todo.status}"></td>
+                <td>
+                    <a th:href="@{/delete(id=${todo.id})}">Delete</a>
+                    <a th:if="${todo.status.code == 'p'}" th:href="@{/start(id=${todo.id})}">Start</a>
+                    <a th:if="${todo.status.code == 's'}" th:href="@{/end(id=${todo.id})}">End</a>
+                </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div>
-        <form th:action="@{/todo}">
+        <form th:action="@{/add}" method="post">
             <input type="text" name="content"/>
             <button>Submit</button>
         </form>

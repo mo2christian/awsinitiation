@@ -1,12 +1,10 @@
 package fr.softeam.formation.awsinitiation.config;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
-import com.amazonaws.regions.Region;
+import com.amazonaws.auth.*;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,16 +29,15 @@ public class DynamoDBConfig {
     private String region;
 
     @Bean
-    public AmazonDynamoDB amazonDynamoDB(AWSCredentials credentials) {
-        AmazonDynamoDB amazonDynamoDB
-                = new AmazonDynamoDBClient(credentials);
-        amazonDynamoDB.setRegion(Region.getRegion(Regions.fromName(region)));
-
+    public AmazonDynamoDB amazonDynamoDB(AWSCredentialsProvider credentialsProvider) {
+        AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard()
+                .withCredentials(credentialsProvider);
         if (amazonDynamoDBEndpoint != null && !amazonDynamoDBEndpoint.isEmpty()) {
-            amazonDynamoDB.setEndpoint(amazonDynamoDBEndpoint);
+            AwsClientBuilder.EndpointConfiguration endpoint
+                    = new AwsClientBuilder.EndpointConfiguration(amazonDynamoDBEndpoint, region);
+            builder.withEndpointConfiguration(endpoint);
         }
-
-        return amazonDynamoDB;
+        return builder.build();
     }
 
     @Bean
@@ -50,13 +47,13 @@ public class DynamoDBConfig {
     }
 
     @Bean
-    public AWSCredentials amazonAWSCredentials() {
+    public AWSCredentialsProvider amazonAWSCredentials() {
         if (instanceProfile){
-            return new InstanceProfileCredentialsProvider(false).getCredentials();
+            return new InstanceProfileCredentialsProvider(false);
         }
         else{
-            return new BasicAWSCredentials(
-                    amazonAWSAccessKey, amazonAWSSecretKey);
+            return new AWSStaticCredentialsProvider(
+                    new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey)) ;
         }
     }
 }

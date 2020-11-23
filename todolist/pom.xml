@@ -10,16 +10,14 @@
 	</parent>
 	<groupId>fr.softeam.formation</groupId>
 	<artifactId>aws-initiation</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>Hoxton.SR9</spring-cloud.version>
 		<lombok.version>1.18.10</lombok.version>
-		<aws.sdk.version>1.11.64</aws.sdk.version>
-		<dynamodb.orm.version>5.1.0</dynamodb.orm.version>
+		<aws.sdk.version>1.11.906</aws.sdk.version>
 	</properties>
 
 	<dependencies>
@@ -58,32 +56,34 @@
 
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-releasetrain</artifactId>
-				<version>Lovelace-SR16</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>aws</executable>
+					<workingDirectory>target</workingDirectory>
+					<arguments>
+						<argument>s3</argument>
+						<argument>cp</argument>
+						<argument>${project.artifactId}-${project.version}.jar</argument>
+						<argument>s3://fr.softeamgroup.formation-awsinitiation/app.jar</argument>
+					</arguments>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
