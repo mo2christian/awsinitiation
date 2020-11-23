@@ -3,10 +3,11 @@
   "Statement": [
     {
       "Action": [
-        "dynamodb:BatchGetItem",
-        "dynamodb:BatchWriteItem",
         "dynamodb:GetItem",
-        "dynamodb:UpdateItem"
+        "dynamodb:UpdateItem",
+		"dynamodb:Scan",
+		"dynamodb:DeleteItem",
+		"dynamodb:PutItem"
       ],
       "Effect": "Allow",
       "Resource": "*"

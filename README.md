@@ -87,6 +87,16 @@ Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni pa
  La suppression de la fonction se fait avec la commande **aws lambda delete-function hello**
  
  # Installation de l'application TODO-LIST
+ Avant l'installation de l'application ou la création de la VM, il est necessaire de creer le role permettant de preciser les droits qu'aura l'application dans le système.
+ La creation du role se fait avec les commandes 
+ ** aws iam create-instance-profile --instance-profile-name todolist-app-role**
+ 
+ Le role crée, creer l'ensemble droits avec la commandes 
+ ** aws iam create-policy --policy-name todolist-app-policy --policy-document file://Ec2ExecutionPolicy.json **
+ 
+ Associer l'ensemble des droits au role avec la commande 
+ **aws iam attach-role-policy --role-name todolist-app --policy-arn arn:aws:iam::858838244701:policy/todolist-app-policy**
+ 
  L'application est écrite en java et par consequent, nécessite une machine virtuelle pour s'exécuter. L'installation ,
  sur un système Ubuntu se fait avec la commande **sudo apt install openjdk-11-jre-headless**
  
@@ -94,9 +104,10 @@ Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni pa
  
  Puis lancer l'application avec la commande **java -jar app.jar**
  
- #Rendre notre application plus résiliante
+ # Rendre notre application plus résiliante
  L'objectif est de permettre à notre application de toujours fonctionner quelque soit l'incident et ce avec un faible temps d'arret. 
  
  Nous mettrons en place un script d'installation qui, au lancement de la machine installera notre application. Ainsi, en cas de panne ou redemarrage, nous aurons toujours
  notre application disponible. Le script installera tous les elements necessaires pour l'execution de l'application.
+ ** aws ec2 run-instances --image-id ami-089d839e690b09b28 --count 1 --instance-type t2.micro --key-name demo --user-data file://startup.sh --iam-instance-profile Name=todolist-app**
  
