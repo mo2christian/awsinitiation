@@ -109,5 +109,5 @@ Renseigner ses credentials : ACCESS KEY et SECRET KEY (Ils vous seront fourni pa
  
  Nous mettrons en place un script d'installation qui, au lancement de la machine installera notre application. Ainsi, en cas de panne ou redemarrage, nous aurons toujours
  notre application disponible. Le script installera tous les elements necessaires pour l'execution de l'application.
- ** aws ec2 run-instances --image-id ami-089d839e690b09b28 --count 1 --instance-type t2.micro --key-name demo --user-data file://startup.sh --iam-instance-profile Name=todolist-app**
+ **aws ec2 run-instances --image-id ami-089d839e690b09b28 --count 1 --instance-type t2.micro --key-name demo --user-data file://startup.sh --iam-instance-profile Name=todolist-app**
  
