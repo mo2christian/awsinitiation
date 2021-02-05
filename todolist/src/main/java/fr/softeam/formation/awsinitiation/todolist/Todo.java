@@ -22,4 +22,7 @@ public class Todo implements Serializable {
     @DynamoDBTypeConverted(converter = TodoStatusConverter.class)
     private TodoStatus status = TodoStatus.PENDING;
 
+    @DynamoDBAttribute
+    private String discriminant;
+
 }

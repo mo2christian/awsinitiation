@@ -12,10 +12,10 @@ public class IndexController {
     @Value("${app.version}")
     private String version;
 
-    private final TodoRepository repository;
+    private final TodoService repository;
 
     @Autowired
-    public IndexController(TodoRepository repository) {
+    public IndexController(TodoService repository) {
         this.repository = repository;
     }
 
